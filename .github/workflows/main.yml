@@ -1,0 +1,18 @@
+name: Run Ansible in GitHub Action
+
+on: workflow_dispatch
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      ANSIBLE_HOST_KEY_CHECKING: False
+    steps:
+      - name: Show Ansible information
+        run: ansible-playbook --version
+
+      - name: Install Hyperfoil roles from Galaxy
+        run: ansible-galaxy role install -r roles/requirements.yml
+
+      - name: Install AWS collection from Galaxy
+        run: ansible-galaxy collection install -r roles/ec2-requirements.yml
