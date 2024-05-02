@@ -5,3 +5,4 @@ inventory.ini
 *.pem
 .idea
 *.csv
+*.jfr

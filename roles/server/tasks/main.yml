@@ -1,26 +1,30 @@
-    - debug:
-        msg: "Server Operation is {{ operation | default('DEFAULT') }}"
+- debug:
+    msg: "Server Operation is {{ operation | default('DEFAULT') }}"
 
-    - name: "Initializing server requirements"
-      ansible.builtin.include_tasks: init.yml
-      when: operation is undefined or operation is search("init")
+- name: "Initializing server requirements"
+  ansible.builtin.include_tasks: init.yml
+  when: operation is undefined or operation is search("init")
 
-    - name: "Running server"
-      ansible.builtin.include_tasks: run.yml
-      when: operation is undefined or operation is search("run")
+- name: "Running server"
+  ansible.builtin.include_tasks: run.yml
+  when: operation is undefined or operation is search("run")
 
-    - name: "Creating cache"
-      ansible.builtin.include_tasks: cache_lifecycle.yml
-      vars:
-            http_method: PUT
-      when: operation is undefined or operation is search("create_cache")
+- name: "Creating cache"
+  ansible.builtin.include_tasks: cache_lifecycle.yml
+  vars:
+        http_method: PUT
+  when: operation is undefined or operation is search("create_cache")
 
-    - name: "Delete cache"
-      ansible.builtin.include_tasks: cache_lifecycle.yml
-      vars:
-            http_method: DELETE
-      when: operation is defined and operation is search("delete_cache")
+- name: "Delete cache"
+  ansible.builtin.include_tasks: cache_lifecycle.yml
+  vars:
+        http_method: DELETE
+  when: operation is defined and operation is search("delete_cache")
 
-    - name: "Shutting down server"
-      ansible.builtin.include_tasks: shutdown.yml
-      when: operation is defined and operation is search("shutdown")
+- name: "Shutting down server"
+  ansible.builtin.include_tasks: shutdown.yml
+  when: operation is defined and operation is search("shutdown")
+
+- name: "Download Server JFR files"
+  ansible.builtin.include_tasks: fetch.yml
+  when: operation is defined and operation is search("download_jfr")
