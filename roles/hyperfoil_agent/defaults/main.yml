@@ -2,6 +2,10 @@
 cache_name: benchmark
 # The default test name to find in the benchmarks directory with a prefix ending in `yaml.j2`
 test_name: hotrod-benchmark
+
+# The default number of entries to utilize in the benchmarks
+number_entries: 1000
+
 # The JVM arguments to provide to the agent when it starts
 # Note this is replaced in the benchmark file itself, see the benchmarks directory in the root
 agent_java_args: "{{ undef() }}"
