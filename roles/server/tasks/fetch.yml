@@ -1,6 +1,6 @@
   - name: Download JFR files
     ansible.builtin.fetch:
       src: "{{ server_tmp_dir }}/jfr/server-{{ inventory_hostname }}.jfr"
-      dest: "./"
+      dest: "./{{cache_name}}-{{ ansible_date_time.epoch }}/"
       flat: true
     when: capture_jfr

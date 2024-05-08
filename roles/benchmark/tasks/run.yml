@@ -1,3 +1,11 @@
+- local_action: 
+    module: copy 
+    content: "{{ server_args | to_json }}"
+    dest: "/tmp/server_args.json"
+
+- name: Load server arguments
+  ansible.builtin.include_vars:  "/tmp/server_args.json"
+
 - name: Start Infinispan server
   ansible.builtin.include_role:
     name: server

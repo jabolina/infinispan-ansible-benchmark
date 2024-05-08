@@ -4,7 +4,16 @@ cache_name: benchmark
 test_name: hotrod-benchmark
 
 # The default number of entries to utilize in the benchmarks
-number_entries: 1000
+number_entries: 4000
+
+# The read/write ratio for the benchmark. Default to 80/20, the sum must be 1
+read_ratio: 0.8
+write_ratio: 0.2
+
+# Base load multiplier.
+# This defines the number of client issuing requests times the number of agents in the cluster.
+# The basic formula of the minimum and maximum bounds is: [(#agent * load_multiplier), (#agent * 10 * load_multiplier)].
+load_multiplier: 60
 
 # The JVM arguments to provide to the agent when it starts
 # Note this is replaced in the benchmark file itself, see the benchmarks directory in the root

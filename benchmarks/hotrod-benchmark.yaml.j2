@@ -12,7 +12,7 @@ agents:
     {% if ssh_key is defined -%}
     sshKey: "{{ ssh_key }}"
     {% endif -%}
-    extras: "{{ java_options | default(agent_java_args | default('')) }}"
+    extras: "{{ agent_java_args | default('') }}"
 {% endfor %}
 
 phases:
@@ -32,6 +32,7 @@ phases:
                   key: key-${key}
                   value: value-${cacheValue}
 
+{% if write_ratio > 0 %}
 - rampupPut:
     increasingRate:
       startAfter: load
@@ -48,7 +49,9 @@ phases:
             put: {{ cache_name }}
             key: key-${cacheKey}
             value: value-${cacheValue}
+{% endif %}
 
+{% if read_ratio > 0 %}
 - rampupGet:
     increasingRate:
       startAfter: load
@@ -63,21 +66,26 @@ phases:
         - hotrodRequest:
             get: {{ cache_name }}
             key: key-${cacheKey}
+{% endif %}
 
-- writes20Percent:
+{% if write_ratio > 0 %}
+- performWrites:
     increasingRate:
       startAfter: rampupPut
       duration: 4m
-      initialUsersPerSec: {{ (0.2 * 10 * groups[hyperfoil_agent_group] | length) | int }}
-      targetUsersPerSec: {{ (0.2 * 100 * groups[hyperfoil_agent_group] | length) | int }}
-      maxSessions: {{ (0.2 * 2 * 100 * groups[hyperfoil_agent_group] | length) | int }}
+      initialUsersPerSec: {{ (write_ratio * load_multiplier * groups[hyperfoil_agent_group] | length) | int }}
+      targetUsersPerSec: {{ (write_ratio * 10 * load_multiplier * groups[hyperfoil_agent_group] | length) | int }}
+      maxSessions: {{ (write_ratio * 2 * 10 * load_multiplier * groups[hyperfoil_agent_group] | length) | int }}
       scenario: *put
+{% endif %}
 
-- reads80Percent:
+{% if read_ratio > 0 %}
+- performReads:
     increasingRate:
       startAfter: rampupGet
       duration: 4m
-      initialUsersPerSec: {{ (0.8 * 10 * groups[hyperfoil_agent_group] | length) | int }}
-      targetUsersPerSec: {{ (0.8 * 100 * groups[hyperfoil_agent_group] | length) | int }}
-      maxSessions: {{ (0.8 * 2 * 100 * groups[hyperfoil_agent_group] | length) | int }}
+      initialUsersPerSec: {{ (read_ratio * load_multiplier * groups[hyperfoil_agent_group] | length) | int }}
+      targetUsersPerSec: {{ (read_ratio * 10 * load_multiplier * groups[hyperfoil_agent_group] | length) | int }}
+      maxSessions: {{ (read_ratio * 2 * 10 * load_multiplier * groups[hyperfoil_agent_group] | length) | int }}
       scenario: *get
+{% endif %}
