@@ -1,4 +1,4 @@
-- ansible.builtin.import_playbook: hyperfoil_controller.yml
+#- ansible.builtin.import_playbook: hyperfoil_controller.yml
 
 - ansible.builtin.import_playbook: hyperfoil_agent.yml
   vars:
@@ -11,6 +11,6 @@
 - hosts: "{{ server_hosts | default('server') }}"
   roles: [benchmark]
 
-- ansible.builtin.import_playbook: hyperfoil_controller.yml
-  vars:
-    operation: shutdown
+#- ansible.builtin.import_playbook: hyperfoil_controller.yml
+#  vars:
+#    operation: shutdown

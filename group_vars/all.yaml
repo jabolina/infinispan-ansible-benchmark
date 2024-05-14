@@ -2,3 +2,5 @@
 user: benchmark
 # Password of the user configured on the Infinispan Server
 pass: benchmark
+# Whether to utilize the user and password above for authentication.
+use_auth: True

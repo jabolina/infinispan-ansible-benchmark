@@ -13,7 +13,7 @@ write_ratio: 0.2
 # Base load multiplier.
 # This defines the number of client issuing requests times the number of agents in the cluster.
 # The basic formula of the minimum and maximum bounds is: [(#agent * load_multiplier), (#agent * 10 * load_multiplier)].
-load_multiplier: 60
+load_multiplier: 100
 
 # The JVM arguments to provide to the agent when it starts
 # Note this is replaced in the benchmark file itself, see the benchmarks directory in the root

@@ -2,6 +2,10 @@
   ansible.builtin.include_tasks: init.yml
   when: operation is undefined or operation is search("init")
 
+- name: Is using auth?
+  ansible.builtin.debug:
+    msg: Auth? {{ use_auth }}
+
 - name: "Running hyperfoil test"
   ansible.builtin.include_tasks: run.yml
   run_once: true
@@ -10,3 +14,10 @@
 - name: "Download Hyperfoil agent logs"
   ansible.builtin.include_tasks: download_logs.yml
   when: operation is defined and operation is search("download_logs")
+
+- name: Download JFR
+  ansible.builtin.fetch:
+    src: "/tmp/hyperfoil/workspace/hfa-hotrod.jfr"
+    dest: "./agent-{{ ansible_default_ipv4.address | replace('.', '-') }}.jfr"
+    flat: true
+  when: operation is defined and operation is search("download_jfr")

@@ -2,11 +2,11 @@
   "benchmarks": [
     {
       "name": "hotrod-benchmark",
-      "cache": "cache.xml"
-    },
-    {
-      "name": "hotrod-benchmark",
-      "cache": "repl-cache.xml"
+      "cache": "cache.xml",
+      "arguments": {
+        "require_authentication": true,
+        "use_auth": true
+      }
     }
   ]
 }

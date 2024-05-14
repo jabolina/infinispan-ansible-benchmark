@@ -13,13 +13,14 @@
     </Appenders>
 
     <Loggers>
-        <Logger name="io.hyperfoil" level="TRACE"/>
+        <Logger name="io.hyperfoil.hotrod" level="TRACE"/>
         <Logger name="io.vertx" level="INFO"/>
         <Logger name="io.netty" level="INFO"/>
         <!-- Infinispan is too noisy with all those rebalances -->
         <Logger name="org.infinispan" level="WARN"/>
         <!-- Agent classes are shaded and have different packages -->
         <Logger name="shaded.org.infinispan" level="WARN"/>
+        <Logger name="shaded.org.infinispan.client.hotrod.impl.transport.netty.ChannelPool" level="TRACE" />
 
         <Root level="INFO">
             <AppenderRef ref="STDOUT" level="TRACE"/>
